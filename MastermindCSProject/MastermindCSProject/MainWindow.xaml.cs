@@ -29,6 +29,7 @@ namespace MastermindCSProject
         {
             InitializeComponent();
 
+            //Start declaratie timer. Timespan is 1 seconde zodat de timer iedere tick 1 seconde vooruit gaat.
             timer.Tick += StartCountdown;
             timer.Interval = new TimeSpan(0, 0, 0, 1);
             timer.Start();
@@ -42,16 +43,18 @@ namespace MastermindCSProject
 
 
         }
-        
+        //timespan wordt globaal gedeclareerd zodat hij overal gebruikt kan worden.
         TimeSpan interval;
 
         private void StartCountdown(object? sender, EventArgs e)
         {
-
+            //Een begintijd declareren
             interval = DateTime.Now.Subtract(startTime);
             timerLabel.Content = "Timer: " + interval.ToString("mm\\:ss");
-
+            //een limiet declareren
             TimeSpan limit = TimeSpan.FromSeconds(10);
+
+            //Als de timer langer dan 10 seconden is, stop de timer en voeg 1 poging toe aan de teller
             if (interval.TotalSeconds >= limit.TotalSeconds)
             {
                 timer.Stop();
@@ -63,11 +66,13 @@ namespace MastermindCSProject
 
         private void ToggleDebug(object sender, KeyEventArgs e)
         {
+            //Als CTRL + F12 wordt ingedrukt EN de texbox is verborgen, laat deze dan zien.
             if ((e.Key == Key.F12 && e.KeyboardDevice.Modifiers == ModifierKeys.Control) & secretCodeTextBox.Visibility == Visibility.Hidden)
             {
                 secretCodeTextBox.Visibility = Visibility.Visible;
             }
 
+            //Hetzelfde gebeurd hier, maar omgekeerd. Als de textbox zichtbaar is, wordt deze verborgen.
             else if ((e.Key == Key.F12 && e.KeyboardDevice.Modifiers == ModifierKeys.Control) & secretCodeTextBox.Visibility == Visibility.Visible)
             {
                 secretCodeTextBox.Visibility= Visibility.Hidden;
