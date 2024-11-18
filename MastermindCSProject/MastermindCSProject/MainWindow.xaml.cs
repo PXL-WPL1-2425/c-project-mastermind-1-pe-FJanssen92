@@ -25,11 +25,25 @@ namespace MastermindCSProject
 
             
             RandomColors(out color1, out color2, out color3, out color4);
+            secretCodeTextBox.Text = $"Kleur 1: {color1}, Kleur 2: {color2}, Kleur 3:{color3}, Kleur 4:{color4}";
 
             Title = $"Mastermind - Poging: {attempts}";
 
 
 
+        }
+
+        private void ToggleDebug(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.F12 && e.KeyboardDevice.Modifiers == ModifierKeys.Control) & secretCodeTextBox.Visibility == Visibility.Hidden)
+            {
+                secretCodeTextBox.Visibility = Visibility.Visible;
+            }
+
+            else if ((e.Key == Key.F12 && e.KeyboardDevice.Modifiers == ModifierKeys.Control) & secretCodeTextBox.Visibility == Visibility.Visible)
+            {
+                secretCodeTextBox.Visibility= Visibility.Hidden;
+            }
         }
 
         public void RandomColors(out string color1, out string color2, out string color3, out string color4)
