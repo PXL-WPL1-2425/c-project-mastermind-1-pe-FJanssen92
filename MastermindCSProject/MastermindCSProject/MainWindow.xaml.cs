@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace MastermindCSProject
 {
@@ -19,10 +20,18 @@ namespace MastermindCSProject
 
         private string color1, color2, color3, color4;
         private int attempts = 0;
+        private DispatcherTimer timer = new DispatcherTimer();
+        DateTime startTime;
+
+
         public MainWindow()
         {
             InitializeComponent();
 
+            timer.Tick += StartCountdown;
+            timer.Interval = new TimeSpan(0, 0, 0, 1);
+            timer.Start();
+            startTime = DateTime.Now;
             
             RandomColors(out color1, out color2, out color3, out color4);
             secretCodeTextBox.Text = $"Kleur 1: {color1}, Kleur 2: {color2}, Kleur 3:{color3}, Kleur 4:{color4}";
@@ -31,6 +40,12 @@ namespace MastermindCSProject
 
 
 
+        }
+
+        private void StartCountdown(object? sender, EventArgs e)
+        {
+            TimeSpan interval = DateTime.Now.Subtract(startTime);
+            timerLabel.Content = "Timer: " + interval.ToString("mm\\:ss");
         }
 
         private void ToggleDebug(object sender, KeyEventArgs e)
@@ -192,7 +207,7 @@ namespace MastermindCSProject
 
         private void checkCodeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            
 
             string chosenColor1, chosenColor2, chosenColor3, chosenColor4;
             chosenColor1 = color1ComboBox.Text;
@@ -236,6 +251,11 @@ namespace MastermindCSProject
                 }
 
             }
+
+            timer.Tick += StartCountdown;
+            timer.Interval = new TimeSpan(0, 0, 0, 1);
+            timer.Start();
+            startTime = DateTime.Now;
 
             attempts = attempts + 1;
             this.Title = $"Mastermind - Poging: {attempts}";
