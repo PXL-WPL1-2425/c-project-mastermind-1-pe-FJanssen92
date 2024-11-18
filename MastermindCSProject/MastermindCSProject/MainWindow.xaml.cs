@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Microsoft.VisualBasic;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -41,12 +42,24 @@ namespace MastermindCSProject
 
 
         }
+        
+        TimeSpan interval;
 
         private void StartCountdown(object? sender, EventArgs e)
         {
-            TimeSpan interval = DateTime.Now.Subtract(startTime);
+
+            interval = DateTime.Now.Subtract(startTime);
             timerLabel.Content = "Timer: " + interval.ToString("mm\\:ss");
+
+            TimeSpan limit = TimeSpan.FromSeconds(10);
+            if (interval.TotalSeconds >= limit.TotalSeconds)
+            {
+                timer.Stop();
+                attempts = attempts + 1;
+                this.Title = $"Mastermind - Poging: {attempts}";
+            }
         }
+        
 
         private void ToggleDebug(object sender, KeyEventArgs e)
         {
@@ -251,7 +264,7 @@ namespace MastermindCSProject
                 }
 
             }
-
+            //Timer start opnieuw
             timer.Tick += StartCountdown;
             timer.Interval = new TimeSpan(0, 0, 0, 1);
             timer.Start();
